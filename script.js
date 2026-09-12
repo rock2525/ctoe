@@ -116,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { date: '2025.08', place: 'Ishigaki', country: 'Japan', type: 'dive', lat: 24.34, lng: 124.16 },
         { date: '2026.02', place: 'Niseko', country: 'Japan', type: 'snow', lat: 42.80, lng: 140.69 },
         { date: '2026.05', place: 'Sabang', country: 'Philippines', type: 'dive', lat: 13.52, lng: 120.96 },
+        { date: '2026.10', place: 'Manado', country: 'Indonesia', type: 'dive', upcoming: true, lat: 1.49, lng: 124.84 },
     ];
     const iconFor = (type) => (type === 'snow' ? '🏂' : '🤿');
 
@@ -127,12 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
     [...tours].reverse().forEach(t => {
         const key = `${t.lat},${t.lng}`;
         const item = document.createElement('div');
-        item.className = 'journey-item';
+        item.className = 'journey-item' + (t.upcoming ? ' upcoming' : '');
         item.dataset.key = key;
         item.innerHTML =
             `<span class="j-icon">${iconFor(t.type)}</span>` +
             `<span class="j-date">${t.date}</span>` +
-            `<span class="j-place">${t.place}</span>` +
+            `<span class="j-place">${t.place}${t.upcoming ? ' <span class="j-next">NEXT</span>' : ''}</span>` +
             `<span class="j-country">${t.country}</span>`;
         timelineEl.appendChild(item);
     });
@@ -149,9 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
             maxZoom: 16,
         }).addTo(map);
 
-        const pinIcon = (type) => L.divIcon({
+        const pinIcon = (t) => L.divIcon({
             className: '',
-            html: `<div class="c2e-pin ${type === 'snow' ? 'snow' : ''}"></div>`,
+            html: `<div class="c2e-pin ${t.upcoming ? 'next' : (t.type === 'snow' ? 'snow' : '')}"></div>`,
             iconSize: [16, 16],
             iconAnchor: [8, 8],
         });
@@ -161,9 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const key = `${t.lat},${t.lng}`;
             bounds.push([t.lat, t.lng]);
             if (markersByKey[key]) return;
-            const m = L.marker([t.lat, t.lng], { icon: pinIcon(t.type) })
+            const m = L.marker([t.lat, t.lng], { icon: pinIcon(t) })
                 .addTo(map)
-                .bindPopup(`<b>${iconFor(t.type)} ${t.place}</b><br>${t.country}`);
+                .bindPopup(`<b>${iconFor(t.type)} ${t.place}</b><br>${t.country}` +
+                    (t.upcoming ? '<br><span style="color:#ffd166">Next tour · 2026.10.03</span>' : ''));
             m.on('click', () => setActive(key, false));
             markersByKey[key] = m;
         });
@@ -185,6 +187,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         timelineEl.querySelectorAll('.journey-item').forEach(item => {
             item.addEventListener('click', () => setActive(item.dataset.key, true));
+        });
+    }
+
+    /* ---------- C2E Tours videos (thumbnail -> opens on YouTube) ---------- */
+    const videos = ['MwaYwdTxXw4', 'YlUIl1EUcJ0', 'GKeFacM-Rb8', 'MzHY_3FrsMI', '74ywr5ugxvk', 'Ww8BeS-rVnU', 'Sha6-Esf5Hs'];
+    const videoGrid = document.getElementById('videoGrid');
+    if (videoGrid) {
+        videos.forEach(id => {
+            const a = document.createElement('a');
+            a.className = 'video-card';
+            a.href = `https://www.youtube.com/watch?v=${id}`;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.setAttribute('aria-label', 'Watch on YouTube');
+            a.innerHTML =
+                `<img src="https://img.youtube.com/vi/${id}/hqdefault.jpg" alt="C2E video" loading="lazy">` +
+                `<span class="play-btn"></span>`;
+            videoGrid.appendChild(a);
         });
     }
 
