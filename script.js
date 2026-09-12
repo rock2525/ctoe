@@ -1,3 +1,20 @@
+/* ============================================================
+   Gallery photos
+   To add your own: drop files in  image/gallery/  and add the
+   path here, e.g.  'image/gallery/bohol-01.jpg'
+   ============================================================ */
+const galleryImages = [
+    // Default: tour video thumbnails. Replace/extend with real photos below.
+    'https://img.youtube.com/vi/MwaYwdTxXw4/hqdefault.jpg',
+    'https://img.youtube.com/vi/YlUIl1EUcJ0/hqdefault.jpg',
+    'https://img.youtube.com/vi/GKeFacM-Rb8/hqdefault.jpg',
+    'https://img.youtube.com/vi/MzHY_3FrsMI/hqdefault.jpg',
+    'https://img.youtube.com/vi/74ywr5ugxvk/hqdefault.jpg',
+    'https://img.youtube.com/vi/Ww8BeS-rVnU/hqdefault.jpg',
+    // 'image/gallery/bohol-01.jpg',
+    // 'image/gallery/niseko-01.jpg',
+];
+
 document.addEventListener('DOMContentLoaded', () => {
 
     /* ---------- Navbar scrolled state ---------- */
@@ -21,27 +38,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
-    /* ---------- Language toggle (KO / EN) ---------- */
+    /* ---------- Language toggle (default EN / KO) ---------- */
     const langBtn = document.getElementById('langToggle');
-    const i18nEls = document.querySelectorAll('[data-en]');
-    // Capture the original Korean markup once
-    i18nEls.forEach(el => { el.dataset.ko = el.innerHTML.trim(); });
+    const i18nEls = document.querySelectorAll('[data-ko]');
+    // Capture the original English markup once
+    i18nEls.forEach(el => { el.dataset.en = el.innerHTML.trim(); });
 
     const applyLang = (lang) => {
         i18nEls.forEach(el => {
-            el.innerHTML = lang === 'en' ? el.dataset.en : el.dataset.ko;
+            el.innerHTML = lang === 'ko' ? el.dataset.ko : el.dataset.en;
         });
         document.documentElement.lang = lang;
-        langBtn.textContent = lang === 'en' ? 'KO' : 'EN';
+        langBtn.textContent = lang === 'ko' ? 'EN' : 'KO';
         try { localStorage.setItem('c2e-lang', lang); } catch (e) {}
     };
 
-    let currentLang = 'ko';
-    try { currentLang = localStorage.getItem('c2e-lang') || 'ko'; } catch (e) {}
+    let currentLang = 'en';
+    try { currentLang = localStorage.getItem('c2e-lang') || 'en'; } catch (e) {}
     applyLang(currentLang);
 
     langBtn.addEventListener('click', () => {
-        currentLang = currentLang === 'en' ? 'ko' : 'en';
+        currentLang = currentLang === 'ko' ? 'en' : 'ko';
         applyLang(currentLang);
     });
 
@@ -51,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Fix Leaflet sizing once its section is visible
                 if (entry.target.id === 'history' && window._c2eMap) {
                     setTimeout(() => window._c2eMap.invalidateSize(), 350);
                 }
@@ -86,33 +102,35 @@ document.addEventListener('DOMContentLoaded', () => {
     stats.forEach(el => statObserver.observe(el));
 
     /* ---------- Journey map + timeline ---------- */
+    // type: 'dive' (🤿) or 'snow' (🏂 ski/snowboard)
     const tours = [
-        { date: '2018.07', place: 'Anilao', country: 'Philippines', lat: 13.76, lng: 120.90 },
-        { date: '2019.02', place: 'Sabang', country: 'Philippines', lat: 13.52, lng: 120.96 },
-        { date: '2019.06', place: 'Palau', country: 'Palau', lat: 7.34, lng: 134.48 },
-        { date: '2019.10', place: 'Bohol', country: 'Philippines', lat: 9.85, lng: 124.14 },
-        { date: '2020.01', place: 'Liloan', country: 'Philippines', lat: 10.40, lng: 123.99 },
-        { date: '2022.08', place: 'Anilao', country: 'Philippines', lat: 13.76, lng: 120.90 },
-        { date: '2022.12', place: 'Bohol', country: 'Philippines', lat: 9.85, lng: 124.14 },
-        { date: '2024.06', place: 'Bohol', country: 'Philippines', lat: 9.85, lng: 124.14 },
-        { date: '2024.12', place: 'Malapascua', country: 'Philippines', lat: 11.32, lng: 124.12 },
-        { date: '2025.08', place: 'Ishigaki', country: 'Japan', lat: 24.34, lng: 124.16 },
+        { date: '2018.07', place: 'Anilao', country: 'Philippines', type: 'dive', lat: 13.76, lng: 120.90 },
+        { date: '2019.02', place: 'Sabang', country: 'Philippines', type: 'dive', lat: 13.52, lng: 120.96 },
+        { date: '2019.06', place: 'Palau', country: 'Palau', type: 'dive', lat: 7.34, lng: 134.48 },
+        { date: '2019.10', place: 'Bohol', country: 'Philippines', type: 'dive', lat: 9.85, lng: 124.14 },
+        { date: '2020.01', place: 'Liloan', country: 'Philippines', type: 'dive', lat: 10.40, lng: 123.99 },
+        { date: '2022.08', place: 'Anilao', country: 'Philippines', type: 'dive', lat: 13.76, lng: 120.90 },
+        { date: '2022.12', place: 'Bohol', country: 'Philippines', type: 'dive', lat: 9.85, lng: 124.14 },
+        { date: '2024.06', place: 'Bohol', country: 'Philippines', type: 'dive', lat: 9.85, lng: 124.14 },
+        { date: '2024.12', place: 'Malapascua', country: 'Philippines', type: 'dive', lat: 11.32, lng: 124.12 },
+        { date: '2025.08', place: 'Ishigaki', country: 'Japan', type: 'dive', lat: 24.34, lng: 124.16 },
+        { date: '2026.02', place: 'Niseko', country: 'Japan', type: 'snow', lat: 42.80, lng: 140.69 },
+        { date: '2026.05', place: 'Sabang', country: 'Philippines', type: 'dive', lat: 13.52, lng: 120.96 },
     ];
+    const iconFor = (type) => (type === 'snow' ? '🏂' : '🤿');
 
     const timelineEl = document.getElementById('journeyTimeline');
     const mapEl = document.getElementById('journeyMap');
     let markersByKey = {};
 
     // Build timeline items (newest first)
-    const ordered = [...tours].reverse();
-    ordered.forEach((t, i) => {
+    [...tours].reverse().forEach(t => {
         const key = `${t.lat},${t.lng}`;
         const item = document.createElement('div');
         item.className = 'journey-item';
         item.dataset.key = key;
-        item.dataset.lat = t.lat;
-        item.dataset.lng = t.lng;
         item.innerHTML =
+            `<span class="j-icon">${iconFor(t.type)}</span>` +
             `<span class="j-date">${t.date}</span>` +
             `<span class="j-place">${t.place}</span>` +
             `<span class="j-country">${t.country}</span>`;
@@ -120,37 +138,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (typeof L !== 'undefined' && mapEl) {
-        const map = L.map(mapEl, {
-            scrollWheelZoom: false,
-            attributionControl: true,
-        });
+        const map = L.map(mapEl, { scrollWheelZoom: false, attributionControl: true });
         window._c2eMap = map;
 
         // Esri dark canvas (free, no API key required)
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri',
-            maxZoom: 16,
+            attribution: 'Tiles &copy; Esri', maxZoom: 16,
         }).addTo(map);
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
             maxZoom: 16,
         }).addTo(map);
 
-        const pinIcon = () => L.divIcon({
+        const pinIcon = (type) => L.divIcon({
             className: '',
-            html: '<div class="c2e-pin"></div>',
+            html: `<div class="c2e-pin ${type === 'snow' ? 'snow' : ''}"></div>`,
             iconSize: [16, 16],
             iconAnchor: [8, 8],
         });
 
         const bounds = [];
-        // One marker per unique location
         [...tours].forEach(t => {
             const key = `${t.lat},${t.lng}`;
             bounds.push([t.lat, t.lng]);
             if (markersByKey[key]) return;
-            const m = L.marker([t.lat, t.lng], { icon: pinIcon() })
+            const m = L.marker([t.lat, t.lng], { icon: pinIcon(t.type) })
                 .addTo(map)
-                .bindPopup(`<b>${t.place}</b><br>${t.country}`);
+                .bindPopup(`<b>${iconFor(t.type)} ${t.place}</b><br>${t.country}`);
             m.on('click', () => setActive(key, false));
             markersByKey[key] = m;
         });
@@ -175,12 +188,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* ---------- Gallery lightbox ---------- */
+    /* ---------- Gallery (rendered from galleryImages) ---------- */
+    const galleryGrid = document.getElementById('galleryGrid');
+    galleryImages.forEach((src, i) => {
+        const fig = document.createElement('figure');
+        fig.className = 'gallery-item';
+        fig.dataset.full = src;
+        fig.innerHTML = `<img src="${src}" alt="C2E moment ${i + 1}" loading="lazy">`;
+        galleryGrid.appendChild(fig);
+    });
+
+    /* ---------- Lightbox ---------- */
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
     const closeBtn = lightbox.querySelector('.lightbox-close');
 
-    document.querySelectorAll('.gallery-item').forEach(item => {
+    galleryGrid.querySelectorAll('.gallery-item').forEach(item => {
         item.addEventListener('click', () => {
             lightboxImg.src = item.dataset.full || item.querySelector('img').src;
             lightbox.classList.add('open');

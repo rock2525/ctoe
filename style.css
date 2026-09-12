@@ -366,6 +366,28 @@ body::before {
     color: var(--text-muted);
 }
 
+.activity-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 34px;
+}
+
+.activity-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 30px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    font-family: var(--font-main);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
 /* ---------- Journey (History + Map) ---------- */
 .journey-stats {
     display: flex;
@@ -465,6 +487,12 @@ body::before {
     box-shadow: 0 0 20px rgba(0, 198, 255, 0.15);
 }
 
+.journey-item .j-icon {
+    font-size: 1.05rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
 .journey-item .j-date {
     font-family: var(--font-main);
     font-weight: 700;
@@ -535,6 +563,19 @@ body::before {
 .c2e-pin.active {
     background: #fff;
     border-color: var(--accent);
+}
+
+/* Snow (ski/board) trips get a warm marker */
+.c2e-pin.snow {
+    background: #ffd166;
+    box-shadow: 0 0 0 rgba(255, 209, 102, 0.6);
+    animation: pinPulseSnow 2s infinite;
+}
+
+@keyframes pinPulseSnow {
+    0% { box-shadow: 0 0 0 0 rgba(255, 209, 102, 0.5); }
+    70% { box-shadow: 0 0 0 12px rgba(255, 209, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 209, 102, 0); }
 }
 
 @keyframes pinPulse {
@@ -767,6 +808,15 @@ body::before {
 .upcoming-card p {
     color: var(--text-muted);
     margin-bottom: 30px;
+}
+
+.upcoming-shop {
+    display: inline-block;
+    margin: 0 auto 18px;
+    color: var(--accent);
+    font-family: var(--font-main);
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
 .btn-outline {
