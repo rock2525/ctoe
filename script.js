@@ -50,11 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         document.documentElement.lang = lang;
         langBtn.textContent = lang === 'ko' ? 'EN' : 'KO';
-        try { localStorage.setItem('c2e-lang', lang); } catch (e) {}
+        try { localStorage.setItem('c2e_lang_v2', lang); } catch (e) {}
     };
 
     let currentLang = 'en';
-    try { currentLang = localStorage.getItem('c2e-lang') || 'en'; } catch (e) {}
+    try { currentLang = localStorage.getItem('c2e_lang_v2') || 'en'; } catch (e) {}
     applyLang(currentLang);
 
     langBtn.addEventListener('click', () => {
@@ -203,7 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
             a.setAttribute('aria-label', 'Watch on YouTube');
             a.innerHTML =
                 `<img src="https://img.youtube.com/vi/${id}/hqdefault.jpg" alt="C2E video" loading="lazy">` +
-                `<span class="play-btn"></span>`;
+                `<span class="play-btn"></span>` +
+                `<span class="video-tag">Watch on YouTube ↗</span>`;
             videoGrid.appendChild(a);
         });
     }
