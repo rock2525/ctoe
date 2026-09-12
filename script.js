@@ -4,15 +4,15 @@
    path here, e.g.  'image/gallery/bohol-01.jpg'
    ============================================================ */
 const galleryImages = [
-    // Default: tour video thumbnails. Replace/extend with real photos below.
-    'https://img.youtube.com/vi/MwaYwdTxXw4/hqdefault.jpg',
-    'https://img.youtube.com/vi/YlUIl1EUcJ0/hqdefault.jpg',
-    'https://img.youtube.com/vi/GKeFacM-Rb8/hqdefault.jpg',
-    'https://img.youtube.com/vi/MzHY_3FrsMI/hqdefault.jpg',
-    'https://img.youtube.com/vi/74ywr5ugxvk/hqdefault.jpg',
-    'https://img.youtube.com/vi/Ww8BeS-rVnU/hqdefault.jpg',
-    // 'image/gallery/bohol-01.jpg',
-    // 'image/gallery/niseko-01.jpg',
+    'image/gallery/RAK07123.jpg',
+    'image/gallery/RAK07214.jpg',
+    'image/gallery/RAK07220.jpg',
+    'image/gallery/IMG_4060.JPG',
+    'image/gallery/IMG_3524.JPG',
+    'image/gallery/IMG_3525.jpg',
+    'image/gallery/IMG_3615.JPG',
+    'image/gallery/IMG_0148.jpg',
+    // To add more: drop the file in image/gallery/ and add its path here.
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
