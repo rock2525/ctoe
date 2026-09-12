@@ -191,21 +191,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ---------- C2E Tours videos (thumbnail -> opens on YouTube) ---------- */
-    const videos = ['MwaYwdTxXw4', 'YlUIl1EUcJ0', 'GKeFacM-Rb8', 'MzHY_3FrsMI', '74ywr5ugxvk', 'Ww8BeS-rVnU', 'Sha6-Esf5Hs'];
+    const videos = [
+        { id: 'MwaYwdTxXw4', title: '[4K] C2E in Niseko' },
+        { id: 'YlUIl1EUcJ0', title: '[4K] C2E Bohol Tour' },
+        { id: 'GKeFacM-Rb8', title: '[4K] C2E Anilao Tour' },
+        { id: 'MzHY_3FrsMI', title: 'C2E Liloan Tour' },
+        { id: '74ywr5ugxvk', title: 'C2E Bohol Tour' },
+        { id: 'Ww8BeS-rVnU', title: 'C2E Palau Tour' },
+        { id: 'Sha6-Esf5Hs', title: 'C2E Sabang Tour' },
+    ];
     const videoGrid = document.getElementById('videoGrid');
     if (videoGrid) {
-        videos.forEach(id => {
-            const a = document.createElement('a');
-            a.className = 'video-card';
-            a.href = `https://www.youtube.com/watch?v=${id}`;
-            a.target = '_blank';
-            a.rel = 'noopener';
-            a.setAttribute('aria-label', 'Watch on YouTube');
-            a.innerHTML =
-                `<img src="https://img.youtube.com/vi/${id}/hqdefault.jpg" alt="C2E video" loading="lazy">` +
+        videos.forEach(v => {
+            const item = document.createElement('div');
+            item.className = 'video-item';
+            item.innerHTML =
+                `<a class="video-card" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener" aria-label="Watch on YouTube: ${v.title}">` +
+                `<img src="https://img.youtube.com/vi/${v.id}/hqdefault.jpg" alt="${v.title}" loading="lazy">` +
                 `<span class="play-btn"></span>` +
-                `<span class="video-tag">Watch on YouTube ↗</span>`;
-            videoGrid.appendChild(a);
+                `<span class="video-tag">Watch on YouTube ↗</span>` +
+                `</a>` +
+                `<h3 class="video-title">${v.title}</h3>`;
+            videoGrid.appendChild(item);
         });
     }
 

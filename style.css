@@ -742,6 +742,21 @@ body::before {
     transform: translateY(0);
 }
 
+.video-title {
+    margin-top: 14px;
+    text-align: center;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    letter-spacing: 0.2px;
+    transition: color 0.25s ease;
+}
+
+.video-item:hover .video-title {
+    color: var(--accent);
+}
+
 /* ---------- Gallery ---------- */
 .gallery-grid {
     display: grid;
