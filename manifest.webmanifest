@@ -1,0 +1,17 @@
+{
+  "name": "C2E — Closer to Earth",
+  "short_name": "C2E",
+  "description": "A crew that dives the sea and rides the snow.",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#04070d",
+  "theme_color": "#04070d",
+  "icons": [
+    { "src": "image/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "image/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "image/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
