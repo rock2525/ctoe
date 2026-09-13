@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `<span class="j-date">${t.date}</span>` +
             `<span class="j-place">${t.place} ${badge}</span>` +
             `<span class="j-country">${t.country}</span>` +
-            (t.detail ? `<button class="j-detail-btn" data-detail="${t.detail}">Itinerary</button>` : '');
+            (t.detail ? `<button class="j-detail-btn" data-detail="${t.detail}">Itinerary <span class="j-detail-arrow" aria-hidden="true">&#8594;</span></button>` : '');
         timelineEl.appendChild(item);
     });
 
