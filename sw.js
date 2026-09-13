@@ -1,12 +1,12 @@
 /* C2E service worker — offline access to tour info, checklist, itinerary.
    Strategy: network-first for pages & code (always fresh when online),
    cache-first for images. Bump CACHE when assets change. */
-const CACHE = 'c2e-v24';
+const CACHE = 'c2e-v25';
 const CORE = [
   './',
   'index.html',
-  'style.css?v=24',
-  'script.js?v=24',
+  'style.css?v=25',
+  'script.js?v=25',
   'image/logo-face.png',
   'image/icon-192.png',
   'image/icon-512.png',

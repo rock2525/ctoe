@@ -687,6 +687,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /* ---------- PWA install (Add to Home Screen) ---------- */
+    const installBtn = document.getElementById('installBtn');
+    if (installBtn) {
+        let deferredPrompt = null;
+        const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+        // Android / desktop Chrome: capture the native prompt and reveal the button
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (!isStandalone) installBtn.hidden = false;
+        });
+        // iOS Safari has no prompt event — still show the button (with instructions)
+        if (isIOS && !isStandalone) installBtn.hidden = false;
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                installBtn.hidden = true;
+            } else if (isIOS) {
+                showToast(currentLang === 'ko' ? '하단 공유 버튼 → "홈 화면에 추가"를 눌러주세요' : 'Tap Share → "Add to Home Screen"');
+            } else {
+                showToast(currentLang === 'ko' ? '브라우저 메뉴 → "홈 화면에 추가 / 앱 설치"를 선택하세요' : 'Browser menu → "Install / Add to Home Screen"');
+            }
+        });
+        window.addEventListener('appinstalled', () => { installBtn.hidden = true; });
+    }
+
     /* ============================================================
        Store — product options, cart & checkout (preview flow)
        Payment is intentionally stubbed: the final step shows a
