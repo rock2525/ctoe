@@ -2094,9 +2094,20 @@ footer {
         flex: 1 1 auto;
         min-width: 0;
     }
+    /* Itinerary button drops onto its own line, centered, for emphasis */
+    .journey-item:has(.j-detail-btn) {
+        position: relative;
+        padding-bottom: 54px;
+    }
     .journey-item .j-detail-btn {
-        margin-left: auto;
-        margin-top: 2px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 13px;
+        margin: 0 auto;
+        width: max-content;
+        padding: 9px 24px;
+        font-size: 0.76rem;
     }
 }
 
