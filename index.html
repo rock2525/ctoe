@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C2E - Closer to Earth</title>
     <meta name="description" content="C2E (Closer to Earth) - a crew that dives the sea and rides the snow. Scuba diving in summer, ski &amp; snowboard in winter. Anilao, Bohol, Palau, Ishigaki, Niseko and beyond.">
-    <link rel="stylesheet" href="style.css?v=25">
+    <link rel="stylesheet" href="style.css?v=26">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,7 +31,7 @@
     <!-- Social Media Meta Tags -->
     <meta property="og:title" content="C2E - Closer to Earth">
     <meta property="og:description" content="A crew that dives the sea and rides the snow. Scuba diving, ski &amp; snowboard.">
-    <meta property="og:image" content="https://ctoe.netlify.app/image/thumbnail.png">
+    <meta property="og:image" content="https://ctoe.netlify.app/image/og-share-v2.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://ctoe.netlify.app/">
@@ -40,7 +40,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="C2E - Closer to Earth">
     <meta name="twitter:description" content="A crew that dives the sea and rides the snow.">
-    <meta name="twitter:image" content="https://ctoe.netlify.app/image/thumbnail.png">
+    <meta name="twitter:image" content="https://ctoe.netlify.app/image/og-share-v2.png">
 
     <!-- Structured data -->
     <script type="application/ld+json">
@@ -52,7 +52,7 @@
       "sport": ["Scuba Diving", "Skiing", "Snowboarding"],
       "url": "https://ctoe.netlify.app/",
       "logo": "https://ctoe.netlify.app/image/icon-512.png",
-      "image": "https://ctoe.netlify.app/image/thumbnail.png",
+      "image": "https://ctoe.netlify.app/image/og-share-v2.png",
       "description": "A crew that dives the sea in summer and rides the snow in winter."
     }
     </script>
@@ -613,13 +613,23 @@
         </div>
     </div>
 
+    <!-- Add-to-home help -->
+    <div class="ihelp" id="installModal" aria-hidden="true">
+        <div class="ihelp-backdrop" id="installBackdrop"></div>
+        <div class="ihelp-card" role="dialog" aria-modal="true">
+            <h3 data-ko="홈 화면에 추가">Add to Home Screen</h3>
+            <ol class="ihelp-steps" id="installSteps"></ol>
+            <button class="store-btn store-btn-primary" type="button" id="installModalClose" data-ko="확인">Got it</button>
+        </div>
+    </div>
+
     <!-- Toast -->
     <div class="toast" id="toast" aria-live="polite" hidden></div>
 
     <button class="to-top" id="toTop" aria-label="Top">↑</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    <script src="script.js?v=25"></script>
+    <script src="script.js?v=26"></script>
 </body>
 
 </html>

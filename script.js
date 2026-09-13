@@ -691,7 +691,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const installBtn = document.getElementById('installBtn');
     if (installBtn) {
         let deferredPrompt = null;
-        const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        const ua = navigator.userAgent || '';
+        const isIOS = /iphone|ipad|ipod/i.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document);
+        const inApp = /KAKAOTALK|Instagram|FBAN|FBAV|FB_IAB|NAVER|Line\/|DaumApps|; wv\)/i.test(ua);
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
         // Android / desktop Chrome: capture the native prompt and reveal the button
@@ -700,20 +702,69 @@ document.addEventListener('DOMContentLoaded', () => {
             deferredPrompt = e;
             if (!isStandalone) installBtn.hidden = false;
         });
-        // iOS Safari has no prompt event — still show the button (with instructions)
-        if (isIOS && !isStandalone) installBtn.hidden = false;
+        // iOS & in-app browsers get no prompt event — still show the button (with guided steps)
+        if ((isIOS || inApp) && !isStandalone) installBtn.hidden = false;
+
+        const installModal = document.getElementById('installModal');
+        const installSteps = document.getElementById('installSteps');
+
+        function stepsHtml() {
+            const ko = currentLang === 'ko';
+            if (inApp) {
+                return ko
+                    ? '<li>지금은 카톡·인스타 같은 <b>앱 안의 브라우저</b>예요. 여기선 홈 화면 추가가 안 됩니다.</li>'
+                    + '<li>화면 <b>오른쪽 위</b> 또는 <b>아래</b>의 <span class="ih-key">···</span> 메뉴를 누르세요.</li>'
+                    + '<li><b>‘Safari로 열기’</b>(아이폰) 또는 <b>‘다른 브라우저로 열기’</b>(안드로이드)를 선택하세요.</li>'
+                    + '<li>그 브라우저에서 이 버튼을 다시 누르면 됩니다.</li>'
+                    : '<li>You’re in an <b>in-app browser</b> (KakaoTalk, Instagram…). Install isn’t possible here.</li>'
+                    + '<li>Open the <span class="ih-key">···</span> menu (top-right or bottom).</li>'
+                    + '<li>Choose <b>“Open in Safari”</b> (iOS) or <b>“Open in browser”</b> (Android).</li>'
+                    + '<li>Then tap this button again there.</li>';
+            }
+            if (isIOS) {
+                return ko
+                    ? '<li>사파리 <b>맨 아래 가운데</b>의 <span class="ih-key">공유 버튼</span>(⬆️ 네모 아이콘)을 누르세요.</li>'
+                    + '<li>메뉴를 아래로 내려 <b>‘홈 화면에 추가’</b>를 누르세요.</li>'
+                    + '<li>오른쪽 위 <b>‘추가’</b>를 누르면 끝!</li>'
+                    : '<li>Tap the <span class="ih-key">Share button</span> (box with ↑) at the bottom of Safari.</li>'
+                    + '<li>Scroll down and choose <b>“Add to Home Screen”</b>.</li>'
+                    + '<li>Tap <b>“Add”</b> at the top-right.</li>';
+            }
+            return ko
+                ? '<li>브라우저 <span class="ih-key">⋮</span> 메뉴(오른쪽 위)를 여세요.</li>'
+                + '<li><b>‘앱 설치’</b> 또는 <b>‘홈 화면에 추가’</b>를 선택하세요.</li>'
+                : '<li>Open the browser <span class="ih-key">⋮</span> menu (top-right).</li>'
+                + '<li>Choose <b>“Install app”</b> or <b>“Add to Home screen”</b>.</li>';
+        }
+        function openInstallHelp() {
+            if (!installModal || !installSteps) return;
+            installSteps.innerHTML = stepsHtml();
+            installModal.classList.add('open');
+            installModal.setAttribute('aria-hidden', 'false');
+        }
+        function closeInstallHelp() {
+            if (!installModal) return;
+            installModal.classList.remove('open');
+            installModal.setAttribute('aria-hidden', 'true');
+        }
 
         installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
+            if (deferredPrompt) {           // Android / desktop → native install
                 deferredPrompt.prompt();
                 await deferredPrompt.userChoice;
                 deferredPrompt = null;
                 installBtn.hidden = true;
-            } else if (isIOS) {
-                showToast(currentLang === 'ko' ? '하단 공유 버튼 → "홈 화면에 추가"를 눌러주세요' : 'Tap Share → "Add to Home Screen"');
-            } else {
-                showToast(currentLang === 'ko' ? '브라우저 메뉴 → "홈 화면에 추가 / 앱 설치"를 선택하세요' : 'Browser menu → "Install / Add to Home Screen"');
+                return;
             }
+            openInstallHelp();              // iOS / in-app → guided steps
+        });
+
+        const imClose = document.getElementById('installModalClose');
+        const imBackdrop = document.getElementById('installBackdrop');
+        if (imClose) imClose.addEventListener('click', closeInstallHelp);
+        if (imBackdrop) imBackdrop.addEventListener('click', closeInstallHelp);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && installModal && installModal.classList.contains('open')) closeInstallHelp();
         });
         window.addEventListener('appinstalled', () => { installBtn.hidden = true; });
     }
