@@ -138,8 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { date: '2025.08', place: 'Ishigaki', country: 'Japan', type: 'dive', lat: 24.34, lng: 124.16 },
         { date: '2026.02', place: 'Niseko', country: 'Japan', type: 'snow', lat: 42.80, lng: 140.69 },
         { date: '2026.05', place: 'Sabang', country: 'Philippines', type: 'dive', lat: 13.52, lng: 120.96 },
-        { date: '2026.10', place: 'Manado', country: 'Indonesia', type: 'dive', upcoming: true, next: true, detail: 'manado', lat: 1.49, lng: 124.84 },
-        { date: '2027.02', place: 'Zao Onsen', country: 'Japan', type: 'snow', upcoming: true, lat: 38.16, lng: 140.44 },
+        { date: '2026.10', place: 'Manado', country: 'Indonesia', type: 'dive', detail: 'manado', logbook: true, lat: 1.49, lng: 124.84 },
+        { date: '2027.02', dateFull: '2027.02.19', place: 'Zao Onsen', country: 'Japan', type: 'snow', upcoming: true, next: true, detail: 'zao', lat: 38.16, lng: 140.44 },
     ];
     const iconFor = (type) => (type === 'snow' ? '🏂' : '🤿');
 
@@ -160,7 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
             `<span class="j-date">${t.date}</span>` +
             `<span class="j-place">${t.place} ${badge}</span>` +
             `<span class="j-country">${t.country}</span>` +
-            (t.detail ? `<button class="j-detail-btn" data-detail="${t.detail}">Itinerary <span class="j-detail-arrow" aria-hidden="true">&#8594;</span></button>` : '');
+            (t.detail ? `<span class="j-btns"><button class="j-detail-btn" data-detail="${t.detail}">Itinerary <span class="j-detail-arrow" aria-hidden="true">&#8594;</span></button>` +
+                (t.logbook ? `<button class="j-detail-btn j-log-btn" data-detail="${t.detail}Log">Logbook</button>` : '') + `</span>` : '');
         timelineEl.appendChild(item);
     });
 
@@ -199,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const m = L.marker([t.lat, t.lng], { icon: pinIcon(t) })
                 .addTo(map)
                 .bindPopup(`<b>${iconFor(t.type)} ${t.place}</b><br>${t.country}` +
-                    (t.upcoming ? '<br><span style="color:#ffd166">Next tour · 2026.10.03</span>' : ''));
+                    (t.upcoming ? `<br><span style="color:#ffd166">${t.next ? 'Next tour' : 'Planned'} · ${t.dateFull || t.date}</span>` : ''));
             m.on('click', () => setActive(key, false));
             markersByKey[key] = m;
         });
@@ -259,7 +260,70 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.textContent = `${checkDone()} / ${checkItems.length}`;
     };
 
+    function openLogbook() {
+        if (!detailModal) return;
+        const boats = [
+            { boat: 'Boat 2', guide: 'Jay', date: '2026.10.04', dives: [
+                { ko: '후쿠이', en: 'Fukui', depth: 25, min: 45, temp: 28, t: '10:00–10:45', life: [['거북복', 'Boxfish'], ['곰치', 'Moray Eel'], ['대모거북', 'Hawksbill Turtle'], ['라이언피시', 'Lionfish'], ['바다거북', 'Sea Turtle'], ['파이프피시', 'Pipefish']] },
+                { ko: '레쿠안 3', en: 'Lekuan 3', depth: 25, min: 65, temp: 29, t: '12:00–13:05', life: [['가든일', 'Garden Eel'], ['고등어', 'Indian Mackerel'], ['나비고기', 'Butterflyfish'], ['레드투스 트리거', 'Redtooth Triggerfish'], ['바다거북', 'Sea Turtle'], ['범프헤드패럿피시', 'Bumphead Parrotfish'], ['잭피시', 'Jackfish'], ['크레이피시', '']] },
+                { ko: '레쿠안 2', en: 'Lekuan 2', depth: 18, min: 55, temp: 29, t: '14:20–15:15', life: [['개이빨참치', 'Dogtooth Tuna'], ['나비고기', 'Butterflyfish'], ['나폴레옹피시', 'Napoleon Wrasse'], ['레드투스 트리거', 'Redtooth Triggerfish'], ['블랙스내퍼', 'Black Snapper'], ['스페이드피시', 'Batfish'], ['잭피시', 'Jackfish'], ['화이트팁리프상어', 'Whitetip Reef Shark']] },
+            ] },
+            { boat: 'Boat 4', guide: 'Hailey', date: '2026.10.05', dives: [
+                { ko: '사치코 포인트', en: "Sachiko's Point", depth: 25, min: 55, temp: 26, t: '10:30–11:25', life: [['그레이트바라쿠다', 'Great Barracuda', true], ['그루퍼', 'Grouper'], ['나폴레옹피시', 'Napoleon Wrasse'], ['블랙팁리프상어', 'Blacktip Reef Shark'], ['오랑우탄크랩', 'Orangutan Crab']] },
+                { ko: '파헤파', en: 'Pahepa', depth: 20, min: 50, temp: 26, t: '11:50–12:40', life: [['가시복어', ''], ['갯민숭달팽이', 'Nudibranch'], ['게', 'Crab'], ['나폴레옹피시', 'Napoleon Wrasse'], ['바다거북', 'Sea Turtle']] },
+                { ko: '부나켄 티무르 1', en: 'Bunaken Timur 1', depth: 18, min: 50, temp: 26, t: '13:50–14:40', life: [['나비고기', 'Butterflyfish'], ['레드투스 트리거', 'Redtooth Triggerfish'], ['바다거북', 'Sea Turtle'], ['엔젤피쉬', ''], ['트럼펫피쉬', ''], ['파이프피시', 'Pipefish']] },
+            ] },
+        ];
+        const chip = ([ko, en, rare]) =>
+            `<span class="log-chip${rare ? ' rare' : ''}">${rare ? '<em>RARE</em>' : ''}${ko}${en ? ` <span>${en}</span>` : ''}</span>`;
+        const dive = (d, i) =>
+            `<div class="log-dive">
+                <span class="log-n">Dive ${i + 1}</span>
+                <div class="log-main">
+                    <div class="log-top">
+                        <div class="log-name"><b>${d.ko}</b><i>${d.en}</i></div>
+                        <div class="log-meta"><span>${d.depth}m · ${d.min}min · ${d.temp}°C</span><time>${d.t}</time></div>
+                    </div>
+                    <div class="log-life">${d.life.map(chip).join('')}</div>
+                </div>
+            </div>`;
+
+        detailBody.innerHTML =
+            `<div class="detail-head">
+                <span class="detail-flag">Manado · 2026.10.04–05</span>
+                <h2>Dive Logbook</h2>
+                <p class="detail-meta">보트별 다이빙 기록 · 최대수심 · 다이빙 시간 · 수온</p>
+             </div>` +
+            boats.map(b => `<section class="log-boat"><h3>${b.boat} <span>${b.guide}</span><time>${b.date}</time></h3>${b.dives.map(dive).join('')}</section>`).join('');
+
+        detailModal.classList.add('open');
+        detailModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        detailBody.scrollTop = 0;
+        detailOpen = 'manadoLog';
+    }
+
+    function openZao() {
+        if (!detailModal) return;
+        detailBody.innerHTML =
+            `<div class="detail-head">
+                <span class="detail-flag">Japan · Zao Onsen</span>
+                <h2>Zao Ski Trip</h2>
+                <p class="detail-meta">2027.02.19 – 02.24 · 인천 ↔ 센다이</p>
+             </div>
+             <section class="detail-sec"><h3>Flights</h3>
+                <img class="detail-flight" src="image/zao-flight.jpg?v=38" alt="Incheon to Sendai flights, Feb 19 and Feb 24 2027">
+             </section>`;
+        detailModal.classList.add('open');
+        detailModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        detailBody.scrollTop = 0;
+        detailOpen = 'zao';
+    }
+
     function openDetail(key) {
+        if (key === 'zao') return openZao();
+        if (key === 'manadoLog') return openLogbook();
         if (key !== 'manado' || !detailModal) return;
         const food = [
             ['First Class', '메가마스 해변 · 오션뷰 · 대형 생선구이 · 칠리크랩'],
@@ -582,7 +646,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 
     /* ---------- D-day to next tour ---------- */
-    const nextTourDate = new Date(2026, 9, 3); // 2026-10-03 (Manado)
+    // date: [year, month, day] once the departure day is fixed; until then the month is shown instead of a countdown
+    const NEXT_TOUR = { ko: '자오온천', en: 'Zao Onsen', icon: '🏂', month: '2027.02', date: [2027, 2, 19] };
+    const nextTourDate = NEXT_TOUR.date ? new Date(NEXT_TOUR.date[0], NEXT_TOUR.date[1] - 1, NEXT_TOUR.date[2]) : null;
     function daysUntil(d) {
         const now = new Date(); now.setHours(0, 0, 0, 0);
         return Math.ceil((d - now) / 86400000);
@@ -592,16 +658,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return n > 0 ? 'D-' + n : (n === 0 ? 'D-DAY' : 'D+' + (-n));
     }
     function renderDday() {
-        const dd = ddayLabel();
-        const nm = currentLang === 'ko' ? '마나도' : 'Manado';
-        const lbl = currentLang === 'ko' ? '다음 투어' : 'NEXT TOUR';
         const hero = document.getElementById('heroDday');
-        if (hero) {
-            hero.hidden = false;
-            hero.innerHTML = `<span class="dd-label">${lbl}</span> 🤿 ${nm} <b>${dd}</b>`;
+        const upcomingSec = document.getElementById('upcoming');
+        const active = !nextTourDate || daysUntil(nextTourDate) >= 0;
+        if (upcomingSec) upcomingSec.hidden = !active;
+        if (hero) hero.hidden = !active;
+        if (!active) return;
+        const dd = nextTourDate ? ddayLabel() : NEXT_TOUR.month;
+        const nm = currentLang === 'ko' ? NEXT_TOUR.ko : NEXT_TOUR.en;
+        const lbl = currentLang === 'ko' ? '다음 투어' : 'NEXT TOUR';
+        if (hero) hero.innerHTML = `<span class="dd-label">${lbl}</span> ${NEXT_TOUR.icon} ${nm} <b>${dd}</b>`;
+        const badge = document.getElementById('upcomingBadge');
+        if (badge) {
+            badge.innerHTML = nextTourDate
+                ? `${NEXT_TOUR.date.map((v, i) => (i ? String(v).padStart(2, '0') : v)).join('.')} · <span id="upcomingDday">${dd}</span>`
+                : NEXT_TOUR.month;
         }
-        const up = document.getElementById('upcomingDday');
-        if (up) up.textContent = dd;
     }
     renderDday();
 
