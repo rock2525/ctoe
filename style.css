@@ -1638,14 +1638,14 @@ body::before {
     gap: 6px;
     padding: 6px 13px;
     border-radius: 20px;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
+    background: rgba(0, 198, 255, 0.10);
+    border: 1px solid rgba(0, 198, 255, 0.38);
     font-size: 0.8rem;
-    color: var(--text-color);
+    color: #fff;
 }
 
 .log-chip span {
-    color: var(--text-muted);
+    color: #8fdcf5;
 }
 
 .log-chip.rare {
