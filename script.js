@@ -1,35 +1,3 @@
-/* ============================================================
-   Gallery photos
-   To add your own: drop files in  image/gallery/  and add the
-   path here, e.g.  'image/gallery/bohol-01.jpg'
-   ============================================================ */
-const galleryImages = [
-    'image/gallery/RAK07123.jpg',
-    'image/gallery/RAK07214.jpg',
-    'image/gallery/RAK07220.jpg',
-    'image/gallery/RAK05121.jpg',
-    'image/gallery/IMG_4060.JPG',
-    'image/gallery/IMG_3524.JPG',
-    'image/gallery/IMG_3525.jpg',
-    'image/gallery/IMG_3615.JPG',
-    'image/gallery/IMG_0148.jpg',
-    'image/gallery/IMG_0207.JPG',
-    'image/gallery/IMG_0212.jpg',
-    'image/gallery/IMG_3293.JPG',
-    'image/gallery/IMG_3297.JPG',
-    'image/gallery/IMG_3299.JPG',
-    'image/gallery/IMG_3300.JPG',
-    'image/gallery/IMG_4550.JPG',
-    'image/gallery/IMG_4819.JPG',
-    'image/gallery/IMG_5109.JPG',
-    'image/gallery/IMG_5125.JPG',
-    'image/gallery/IMG_5142.JPG',
-    'image/gallery/IMG_8536.JPG',
-    'image/gallery/IMG_8550.JPG',
-    'image/gallery/IMG_20190203_213916_481.jpg',
-    // To add more: drop the file in image/gallery/ and add its path here.
-];
-
 document.addEventListener('DOMContentLoaded', () => {
 
     /* ---------- Navbar scrolled state ---------- */
@@ -563,29 +531,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryGrid = document.getElementById('galleryGrid');
     const galleryMoreBtn = document.getElementById('galleryMore');
     const galleryMoreCount = document.getElementById('galleryMoreCount');
+    const galleryFilter = document.getElementById('galleryFilter');
     const GALLERY_PAGE = 12;
+    let gList = galleryImages;   // photos in the active album filter
     let gShown = 0;
 
     function renderGalleryBatch() {
-        const next = galleryImages.slice(gShown, gShown + GALLERY_PAGE);
+        const next = gList.slice(gShown, gShown + GALLERY_PAGE);
         const frag = document.createDocumentFragment();
-        next.forEach((src, k) => {
+        next.forEach((img, k) => {
             const idx = gShown + k;
             const fig = document.createElement('figure');
             fig.className = 'gallery-item';
             fig.dataset.index = idx;
-            fig.innerHTML = `<img src="${src}" alt="C2E moment ${idx + 1}" loading="lazy">`;
+            fig.innerHTML = `<img src="${img.src}" alt="C2E moment ${idx + 1}" loading="lazy">`;
             frag.appendChild(fig);
         });
         galleryGrid.appendChild(frag);
         gShown += next.length;
-        const remaining = galleryImages.length - gShown;
+        const remaining = gList.length - gShown;
         if (galleryMoreBtn) {
             galleryMoreBtn.hidden = remaining <= 0;
             if (galleryMoreCount) galleryMoreCount.textContent = remaining > 0 ? '(' + remaining + ')' : '';
         }
     }
-    renderGalleryBatch();
+
+    function setGalleryAlbum(id) {
+        gList = id === 'all' ? galleryImages : galleryImages.filter(img => img.album === id);
+        gShown = 0;
+        galleryGrid.innerHTML = '';
+        renderGalleryBatch();
+        galleryFilter.querySelectorAll('.gallery-chip').forEach(chip => {
+            chip.classList.toggle('active', chip.dataset.album === id);
+        });
+    }
+
+    // Album chips (only when there is more than one album)
+    if (galleryFilter && galleryAlbums.length > 1) {
+        const chip = (id, label, count) =>
+            `<button type="button" class="gallery-chip" data-album="${id}">${label} <span>${count}</span></button>`;
+        galleryFilter.innerHTML = chip('all', 'All', galleryImages.length) +
+            galleryAlbums.map(a => chip(a.id, a.label, a.count)).join('');
+        galleryFilter.hidden = false;
+        galleryFilter.addEventListener('click', (e) => {
+            const c = e.target.closest('.gallery-chip');
+            if (c) setGalleryAlbum(c.dataset.album);
+        });
+    }
+    // Open on the most recent album (albums are sorted newest first)
+    setGalleryAlbum(galleryAlbums.length > 1 ? galleryAlbums[0].id : 'all');
     if (galleryMoreBtn) galleryMoreBtn.addEventListener('click', renderGalleryBatch);
 
     /* ---------- Lightbox (navigates the full gallery, not just loaded ones) ---------- */
@@ -598,10 +592,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let lbIndex = 0;
 
     function showLightbox(i) {
-        const n = galleryImages.length;
+        const n = gList.length;
         if (n === 0) return;
         lbIndex = (i + n) % n;
-        lightboxImg.src = galleryImages[lbIndex];
+        lightboxImg.src = gList[lbIndex].src;
         if (lightboxCount) lightboxCount.textContent = (lbIndex + 1) + ' / ' + n;
     }
     function openLightbox(i) {

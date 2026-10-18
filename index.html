@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C2E - Closer to Earth</title>
     <meta name="description" content="C2E (Closer to Earth) - a crew that dives the sea and rides the snow. Scuba diving in summer, ski &amp; snowboard in winter. Anilao, Bohol, Palau, Ishigaki, Niseko and beyond.">
-    <link rel="stylesheet" href="style.css?v=39">
+    <link rel="stylesheet" href="style.css?v=44">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -345,11 +345,11 @@
                 </div>
                 <!--
                     How to add photos:
-                    1) Put image files in the  image/gallery/  folder
-                       (e.g. image/gallery/bohol-01.jpg)
-                    2) Add the filename to the `galleryImages` list at the top of script.js
-                    The grid below is filled automatically from that list.
+                    1) Drop originals in  image/gallery/_inbox/<album>/   (album = YYYY-MM-name, e.g. 2026-10-manado)
+                    2) Run  python build_gallery.py   (optimizes photos + regenerates gallery-data.js)
+                    Filter chips and the grid below are built automatically from the album folders.
                 -->
+                <div class="gallery-filter" id="galleryFilter" hidden></div>
                 <div class="gallery-grid" id="galleryGrid"></div>
                 <div class="gallery-more">
                     <button class="btn-outline" id="galleryMore" type="button" hidden>
@@ -644,7 +644,8 @@
     <button class="to-top" id="toTop" aria-label="Top">↑</button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    <script src="script.js?v=39"></script>
+    <script src="gallery-data.js?v=44"></script>
+    <script src="script.js?v=44"></script>
 </body>
 
 </html>
