@@ -14,250 +14,312 @@ const galleryAlbums = [
 const galleryImages = [
   {
     "src": "image/gallery/2026-10-manado/img_4786.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 01:46"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4014.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 02:30"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4019.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 06:50"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4020.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 08:34"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4026.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 08:41"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4028.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 08:41"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4030.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 08:43"
   },
   {
     "src": "image/gallery/2026-10-manado/rak07360.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 09:24"
   },
   {
     "src": "image/gallery/2026-10-manado/rak07362.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 09:44"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4033.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 11:28"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4798.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 18:10"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4112.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 18:43"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4114.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 18:49"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4115.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 18:54"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4117.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 19:05"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4119.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 19:30"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4120.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.04 19:36"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4806.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.05 08:47"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4822.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.05 16:25"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4829.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.05 18:52"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4192.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.05 18:52"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4195.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.05 19:54"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4196.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.05 19:57"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4199.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.05 20:07"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4202.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.05 21:35"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4204.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 10:20"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4212.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 10:50"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4214.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 11:34"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4215.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 12:03"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4216.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 12:09"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4217.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 12:09"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4219.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 12:11"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4220.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 12:14"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4221.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 12:17"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4222.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 12:20"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4224.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 12:49"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4855.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 13:26"
   },
   {
     "src": "image/gallery/2026-10-manado/img_3497.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 15:21"
   },
   {
     "src": "image/gallery/2026-10-manado/img_4244.jpg",
-    "album": "2026-10-manado"
+    "album": "2026-10-manado",
+    "taken": "2026.10.06 18:40"
   },
   {
     "src": "image/gallery/archive/RAK07123.jpg",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/RAK07214.jpg",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/RAK07220.jpg",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/RAK05121.jpg",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_4060.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_3524.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_3525.jpg",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_3615.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_0148.jpg",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_0207.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_0212.jpg",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_3293.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_3297.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_3299.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_3300.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_4550.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_4819.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_5109.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_5125.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_5142.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_8536.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_8550.JPG",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   },
   {
     "src": "image/gallery/archive/IMG_20190203_213916_481.jpg",
-    "album": "archive"
+    "album": "archive",
+    "taken": ""
   }
 ];

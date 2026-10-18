@@ -41,6 +41,17 @@ def taken_at(im):
     return ex.get_ifd(0x8769).get(36867) or ex.get(306) or ''
 
 
+def taken_label(path):
+    """'2026.10.04 18:43' for the caption, or '' when the photo has no date."""
+    try:
+        with Image.open(path) as im:
+            t = taken_at(im)
+    except OSError:
+        return ''
+    m = re.match(r'^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2})', t)
+    return f'{m[1]}.{m[2]}.{m[3]} {m[4]}:{m[5]}' if m and m[1] != '0000' else ''
+
+
 def optimize_inbox():
     if not INBOX.is_dir():
         return
@@ -110,7 +121,8 @@ def build():
         if not photos:
             continue
         albums.append({'id': f.name, 'label': album_label(f.name), 'count': len(photos)})
-        images += [{'src': f'image/gallery/{f.name}/{n}', 'album': f.name} for n in photos]
+        images += [{'src': f'image/gallery/{f.name}/{n}', 'album': f.name,
+                    'taken': taken_label(f / n)} for n in photos]
 
     def js(o):
         import json

@@ -271,6 +271,56 @@ document.addEventListener('DOMContentLoaded', () => {
         detailOpen = 'manadoLog';
     }
 
+    /* ---------- Local weather (Open-Meteo, no API key) ---------- */
+    const wxIcon = (c) => c === 0 ? '☀️' : c <= 2 ? '🌤️' : c === 3 ? '☁️' : c <= 48 ? '🌫️' : c <= 57 ? '🌦️'
+        : c <= 67 ? '🌧️' : c <= 77 ? '❄️' : c <= 82 ? '🌦️' : c <= 86 ? '🌨️' : '⛈️';
+    const WX_DOW = ['일', '월', '화', '수', '목', '금', '토'];
+
+    async function loadWeather(el, cfg) {
+        el.innerHTML = '<p class="wx-note">날씨 불러오는 중…</p>';
+        try {
+            const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + cfg.lat + '&longitude=' + cfg.lng +
+                '&current=temperature_2m,weather_code,wind_speed_10m' +
+                '&daily=weather_code,temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_probability_max,wind_speed_10m_max' +
+                '&timezone=auto&forecast_days=16';
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(res.status);
+            const w = await res.json();
+            const d = w.daily;
+            const days = d.time.map((t, i) => ({
+                date: t, code: d.weather_code[i], hi: d.temperature_2m_max[i], lo: d.temperature_2m_min[i],
+                snow: d.snowfall_sum[i], pop: d.precipitation_probability_max[i], wind: d.wind_speed_10m_max[i],
+            }));
+            const trip = days.filter(x => x.date >= cfg.start && x.date <= cfg.end);
+            const show = trip.length ? trip : days.slice(0, 7);
+
+            const [sy, sm, sd] = cfg.start.split('-').map(Number);
+            const from = new Date(sy, sm - 1, sd - 15);
+            const note = trip.length
+                ? '여행 기간 예보'
+                : '앞으로 7일 · 여행 날짜 예보는 ' + (from.getMonth() + 1) + '월 ' + from.getDate() + '일부터 표시돼요';
+
+            const card = (x) => {
+                const [y, m, dd] = x.date.split('-').map(Number);
+                const dow = WX_DOW[new Date(y, m - 1, dd).getDay()];
+                const inTrip = x.date >= cfg.start && x.date <= cfg.end;
+                return `<div class="wx-day${inTrip ? ' trip' : ''}">
+                    <span class="wx-date">${m}.${dd} (${dow})</span>
+                    <span class="wx-icon">${wxIcon(x.code)}</span>
+                    <span class="wx-temp">${Math.round(x.hi)}° <i>/ ${Math.round(x.lo)}°</i></span>
+                    <span class="wx-sub">${cfg.snow ? '❄ ' + x.snow + 'cm' : '☔ ' + x.pop + '%'}</span>
+                    <span class="wx-sub">💨 ${Math.round(x.wind)}km/h</span>
+                </div>`;
+            };
+            el.innerHTML =
+                `<div class="wx-now"><span>${cfg.place} 지금</span><b>${wxIcon(w.current.weather_code)} ${Math.round(w.current.temperature_2m)}°C</b>` +
+                `<span>바람 ${Math.round(w.current.wind_speed_10m)}km/h</span></div>` +
+                `<p class="wx-note">${note}</p><div class="wx-days">${show.map(card).join('')}</div>`;
+        } catch (e) {
+            el.innerHTML = '<p class="wx-note">날씨를 불러오지 못했어요. 잠시 후 다시 열어주세요.</p>';
+        }
+    }
+
     function openZao() {
         if (!detailModal) return;
         detailBody.innerHTML =
@@ -279,9 +329,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h2>Zao Ski Trip</h2>
                 <p class="detail-meta">2027.02.19 – 02.24 · 인천 ↔ 센다이</p>
              </div>
+             <section class="detail-sec"><h3>Weather</h3><div class="wx" id="zaoWeather"></div></section>
              <section class="detail-sec"><h3>Flights</h3>
                 <img class="detail-flight" src="image/zao-flight.jpg?v=38" alt="Incheon to Sendai flights, Feb 19 and Feb 24 2027">
              </section>`;
+        loadWeather(detailBody.querySelector('#zaoWeather'),
+            { lat: 38.16, lng: 140.44, start: '2027-02-19', end: '2027-02-24', place: '자오온천', snow: true });
         detailModal.classList.add('open');
         detailModal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
@@ -544,7 +597,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const fig = document.createElement('figure');
             fig.className = 'gallery-item';
             fig.dataset.index = idx;
-            fig.innerHTML = `<img src="${img.src}" alt="C2E moment ${idx + 1}" loading="lazy">`;
+            const label = (galleryAlbums.find(a => a.id === img.album) || {}).label || '';
+            fig.innerHTML = `<img src="${img.src}" alt="C2E moment ${idx + 1}" loading="lazy"><figcaption><b>${label}</b>${img.taken ? `<span>${img.taken}</span>` : ''}</figcaption>`;
             frag.appendChild(fig);
         });
         galleryGrid.appendChild(frag);
